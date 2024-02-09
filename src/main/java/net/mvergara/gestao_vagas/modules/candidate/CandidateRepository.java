@@ -9,4 +9,6 @@ public interface CandidateRepository extends JpaRepository<CandidateEntity, UUID
 
     // Automagicamente sabe fazer o select pelo email e pelo username
     Optional<CandidateEntity> findByUsernameOrEmail(String username, String email);
+
+    Optional<CandidateEntity> findByUsername(String username);
 }
