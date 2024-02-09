@@ -39,15 +39,17 @@ public class AuthCandidateUseCase {
         }
 
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
+        var expiresIn = Instant.now().plus(Duration.ofMinutes(20));
         var token = JWT.create()
                 .withIssuer("mvergara.net")
-                .withExpiresAt(Instant.now().plus(Duration.ofMinutes(20)))
+                .withExpiresAt(expiresIn)
                 .withClaim("roles", Arrays.asList("candidate"))
                 .withSubject(candidate.getId().toString())
                 .sign(algorithm);
 
         var authCandidateResponse = AuthCandidateResponseDTO.builder()
                 .access_token(token)
+                .expires_in(expiresIn.toEpochMilli())
                 .build();
 
         return authCandidateResponse;
