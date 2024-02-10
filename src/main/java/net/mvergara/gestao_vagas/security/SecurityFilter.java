@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.mvergara.gestao_vagas.providers.JWTProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -21,11 +22,9 @@ public class SecurityFilter extends OncePerRequestFilter {
     private JWTProvider jwtProvider;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Contexto do usuário como nulo
-        SecurityContextHolder.getContext().setAuthentication(null);
+        // SecurityContextHolder.getContext().setAuthentication(null);
 
         // Extraindo o token
         String header = request.getHeader("Authorization");
@@ -34,13 +33,20 @@ public class SecurityFilter extends OncePerRequestFilter {
             if (header != null) {
                 // Validar o token
                 var subjectToken = this.jwtProvider.validateToken(header);
-                if (subjectToken.isEmpty()) {
+                if (subjectToken == null) {
                     response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     return;
                 }
+                // Mapeamento das roles
+                var roles = subjectToken.getClaim("roles").asList(Object.class);
+                var grants = roles
+                        .stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role.toString().toUpperCase()))
+                        .toList();
+
                 // Subject do JWT payload
-                request.setAttribute("company_id", subjectToken);
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subjectToken, null, Collections.emptyList());
+                request.setAttribute("company_id", subjectToken.getSubject());
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(subjectToken.getSubject(), null, grants);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }

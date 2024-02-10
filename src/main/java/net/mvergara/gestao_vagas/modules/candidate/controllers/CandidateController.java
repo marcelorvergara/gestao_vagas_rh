@@ -7,6 +7,7 @@ import net.mvergara.gestao_vagas.modules.candidate.useCase.CreateCandidateUseCas
 import net.mvergara.gestao_vagas.modules.candidate.useCase.ProfileCandidateUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -29,13 +30,15 @@ public class CandidateController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @GetMapping("/")
-    public ResponseEntity<Object> get(HttpServletRequest request){
+    @PreAuthorize("hasRole('CANDIDATE')")
+    public ResponseEntity<Object> get(HttpServletRequest request) {
         var idCandidate = request.getAttribute("candidate_id");
         try {
             var profile = this.profileCandidateUseCase.execute(UUID.fromString(idCandidate.toString()));
             return ResponseEntity.ok().body(profile);
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

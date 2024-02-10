@@ -30,11 +30,12 @@ public class AuthCandidateUseCase {
 
     public AuthCandidateResponseDTO execute(AuthCandidateRequestDTO authCandidateRequestDTO) throws AuthenticationException {
         var candidate = this.candidateRepository.findByUsername(authCandidateRequestDTO.username())
-                .orElseThrow(() -> {throw new UsernameNotFoundException("Username/Password incorrect");
+                .orElseThrow(() -> {
+                    throw new UsernameNotFoundException("Username/Password incorrect");
                 });
         var passwordMatched = this.passwordEncoder.matches(authCandidateRequestDTO.password(), candidate.getPassword());
 
-        if(!passwordMatched) {
+        if (!passwordMatched) {
             throw new AuthenticationException(secretKey);
         }
 
@@ -43,7 +44,7 @@ public class AuthCandidateUseCase {
         var token = JWT.create()
                 .withIssuer("mvergara.net")
                 .withExpiresAt(expiresIn)
-                .withClaim("roles", Arrays.asList("candidate"))
+                .withClaim("roles", Arrays.asList("CANDIDATE"))
                 .withSubject(candidate.getId().toString())
                 .sign(algorithm);
 
