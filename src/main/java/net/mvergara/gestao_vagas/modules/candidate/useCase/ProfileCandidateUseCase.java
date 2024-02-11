@@ -1,7 +1,8 @@
 package net.mvergara.gestao_vagas.modules.candidate.useCase;
 
-import net.mvergara.gestao_vagas.modules.candidate.CandidateRepository;
 import net.mvergara.gestao_vagas.modules.candidate.dto.ProfileCnadidateResponseDTO;
+import net.mvergara.gestao_vagas.modules.candidate.entity.ApplyJobEntity;
+import net.mvergara.gestao_vagas.modules.candidate.repository.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

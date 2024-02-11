@@ -1,5 +1,6 @@
-package net.mvergara.gestao_vagas.modules.candidate;
+package net.mvergara.gestao_vagas.modules.candidate.repository;
 
+import net.mvergara.gestao_vagas.modules.candidate.entity.CandidateEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
