@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import net.mvergara.gestao_vagas.modules.candidate.CandidateEntity;
+import net.mvergara.gestao_vagas.modules.candidate.dto.ProfileCnadidateResponseDTO;
 import net.mvergara.gestao_vagas.modules.candidate.useCase.CreateCandidateUseCase;
 import net.mvergara.gestao_vagas.modules.candidate.useCase.ListAllJobsByFilterUseCase;
 import net.mvergara.gestao_vagas.modules.candidate.useCase.ProfileCandidateUseCase;
@@ -47,6 +48,17 @@ public class CandidateController {
 
     @GetMapping("/")
     @PreAuthorize("hasRole('CANDIDATE')")
+    @Tag(name = "Candidato", description = "Informações do candidato")
+    @Operation(summary = "Perfil do candidato", description = "Essa função é responsável por mostrar as informações do perfil do candidato")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", content = {
+                            @Content(schema = @Schema(implementation = ProfileCnadidateResponseDTO.class))
+                    }),
+                    @ApiResponse(responseCode = "400", description = "User not found")
+            }
+    )
+    @SecurityRequirement(name = "jwt_auth")
     public ResponseEntity<Object> get(HttpServletRequest request) {
         var idCandidate = request.getAttribute("candidate_id");
         try {
@@ -67,7 +79,7 @@ public class CandidateController {
             })
     )
     @SecurityRequirement(name = "jwt_auth")
-    public List<JobEntity> findJobByFilter(@RequestParam String filter){
+    public List<JobEntity> findJobByFilter(@RequestParam String filter) {
         return this.listAllJobsByFilterUseCase.execute(filter);
     }
 }
