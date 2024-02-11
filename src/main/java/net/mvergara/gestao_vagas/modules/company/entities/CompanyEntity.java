@@ -12,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 @Entity(name = "company")
 @Data
 public class CompanyEntity {
@@ -20,7 +21,7 @@ public class CompanyEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String name;
-    @Pattern(regexp = "\\S+", message="O campo [username] não deve conter espaço")
+    @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaço")
     private String username;
     @Email(message = "O campo [email] deve conter um e-mail válido")
     private String email;

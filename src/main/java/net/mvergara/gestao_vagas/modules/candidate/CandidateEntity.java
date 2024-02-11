@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 @Data
 @Entity(name = "candidate")
 public class CandidateEntity {
@@ -25,7 +26,7 @@ public class CandidateEntity {
     @Schema(example = "Marcelo Vergara", requiredMode = Schema.RequiredMode.REQUIRED, description = "Nome do candidato")
     private String name;
     @NotBlank()
-    @Pattern(regexp = "\\S+", message="O campo [username] não deve conter espaço")
+    @Pattern(regexp = "\\S+", message = "O campo [username] não deve conter espaço")
     @Schema(example = "mrvergara", requiredMode = Schema.RequiredMode.REQUIRED, description = "Username do candidato")
     private String username;
     @Email(message = "O campo [email] deve conter um e-mail válido")
