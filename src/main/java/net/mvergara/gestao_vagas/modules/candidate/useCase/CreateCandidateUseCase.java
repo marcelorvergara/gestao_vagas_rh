@@ -1,6 +1,6 @@
 package net.mvergara.gestao_vagas.modules.candidate.useCase;
 
-import net.mvergara.gestao_vagas.exceptions.UserNotFoundException;
+import net.mvergara.gestao_vagas.exceptions.UserFoundException;
 import net.mvergara.gestao_vagas.modules.candidate.CandidateEntity;
 import net.mvergara.gestao_vagas.modules.candidate.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class CreateCandidateUseCase {
         this.candidateRepository
                 .findByUsernameOrEmail(candidateEntity.getUsername(), candidateEntity.getEmail())
                 .ifPresent(user -> {
-                    throw new UserNotFoundException();
+                    throw new UserFoundException();
                 });
 
         var password = passwordEncoder.encode(candidateEntity.getPassword());
