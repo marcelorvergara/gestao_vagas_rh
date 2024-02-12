@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 
 
@@ -74,14 +75,18 @@ public class ApplyJobCandidateUseCaseTest {
                 .candidateId(idCandidate)
                 .jobId(idJob)
                 .build();
+        var applyJobCreated = ApplyJobEntity.builder()
+                .id(UUID.randomUUID())
+                .build();
 
         when(candidateRepository.findById(idCandidate)).thenReturn(Optional.of(new CandidateEntity()));
         when(jobRepository.findById(idJob)).thenReturn(Optional.of(new JobEntity()));
 
-        when(applyJobRespository.save(applyJob)).thenReturn(new ApplyJobEntity());
+        when(applyJobRespository.save(applyJob)).thenReturn(applyJobCreated);
 
         var result = applyJobCandidateUseCase.execute(idCandidate, idJob);
 
         assertThat(result).hasFieldOrProperty("id");
+        assertNotNull(result.getId());
     }
 }
