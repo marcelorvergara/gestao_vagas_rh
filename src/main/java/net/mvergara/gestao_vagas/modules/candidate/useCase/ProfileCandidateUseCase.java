@@ -1,5 +1,6 @@
 package net.mvergara.gestao_vagas.modules.candidate.useCase;
 
+import net.mvergara.gestao_vagas.exceptions.UserNotFoundException;
 import net.mvergara.gestao_vagas.modules.candidate.dto.ProfileCnadidateResponseDTO;
 import net.mvergara.gestao_vagas.modules.candidate.entity.ApplyJobEntity;
 import net.mvergara.gestao_vagas.modules.candidate.repository.CandidateRepository;
@@ -17,7 +18,7 @@ public class ProfileCandidateUseCase {
     public ProfileCnadidateResponseDTO execute(UUID idCandidate){
         var candidate = this.candidateRepository.findById(idCandidate)
                 .orElseThrow(() -> {
-                    throw new UsernameNotFoundException("User not found");
+                    throw new UserNotFoundException("User not found");
                 });
         var candidateDTO = ProfileCnadidateResponseDTO.builder()
                 .description(candidate.getDescription())

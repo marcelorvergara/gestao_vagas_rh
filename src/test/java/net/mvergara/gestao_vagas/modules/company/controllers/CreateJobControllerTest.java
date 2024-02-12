@@ -67,7 +67,7 @@ public class CreateJobControllerTest {
                 .level("LEVEL_TEST")
                 .build();
 
-        var result = mvc.perform(
+        mvc.perform(
                         MockMvcRequestBuilders.post("/company/job/")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectToJSON(createJobDTO))
