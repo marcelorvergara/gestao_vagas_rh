@@ -1,5 +1,6 @@
 package net.mvergara.gestao_vagas.modules.company.controllers;
 
+import net.mvergara.gestao_vagas.exceptions.CompanyNotFoundException;
 import net.mvergara.gestao_vagas.modules.company.dto.CreateJobDTO;
 import net.mvergara.gestao_vagas.modules.company.entities.CompanyEntity;
 import net.mvergara.gestao_vagas.modules.company.respsitories.CompanyRepository;
@@ -22,6 +23,8 @@ import java.util.UUID;
 
 import static net.mvergara.gestao_vagas.utils.TestUtils.generateToken;
 import static net.mvergara.gestao_vagas.utils.TestUtils.objectToJSON;
+import static org.assertj.core.api.Java6Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -71,6 +74,21 @@ public class CreateJobControllerTest {
                                 .header("Authorization", generateToken(company.getId(), "secretqueninguémsabeoqueé"))
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        System.out.println(result);
+    }
+
+    @Test
+    public void should_not_create_new_job_if_company_not_found() throws Exception {
+        var createJobDTO = CreateJobDTO.builder()
+                .benefits("BENEFITS_TEST")
+                .description("DESCRIPTION_TEST")
+                .level("LEVEL_TEST")
+                .build();
+
+        mvc.perform(MockMvcRequestBuilders.post("/company/job/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectToJSON(createJobDTO))
+                        .header("Authorization", generateToken(UUID.randomUUID(), "secretqueninguémsabeoqueé"))
+                )
+                .andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 }
