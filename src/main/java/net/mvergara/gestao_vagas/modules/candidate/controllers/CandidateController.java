@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import net.mvergara.gestao_vagas.modules.candidate.dto.ProfileCnadidateResponseDTO;
-import net.mvergara.gestao_vagas.modules.candidate.entity.ApplyJobEntity;
 import net.mvergara.gestao_vagas.modules.candidate.entity.CandidateEntity;
 import net.mvergara.gestao_vagas.modules.candidate.useCase.ApplyJobCandidateUseCase;
 import net.mvergara.gestao_vagas.modules.candidate.useCase.CreateCandidateUseCase;
