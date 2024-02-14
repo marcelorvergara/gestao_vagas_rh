@@ -9,7 +9,7 @@ RUN mvn clean install
 
 FROM openjdk:17-jdk-slim
 
-EXPOSE 8000
+EXPOSE 10000
 
 COPY --from=build /target/gestao_vagas-0.0.1.jar app.jar
 
